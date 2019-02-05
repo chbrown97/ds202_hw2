@@ -1,0 +1,83 @@
+---
+title: "hw2.Rmd"
+output: html_document
+---
+
+```{r}
+# 1.
+high <- ((15-32)*(5/9))
+low <- ((-10-32)*(5/9))
+cel <- c(high, low)
+print(cel)
+```
+
+```{r}
+# 2.
+vec200 <- rep(c(0,1),100)
+print(vec200)
+```
+
+```{r}
+# 3.
+count = 0
+for (i in 1:1001){
+  if (!(sqrt(i)) %% 1)
+      count = count + 1
+}
+numPerfect <- count
+print(numPerfect)
+
+
+####Cars and Mileage######
+# 1.
+```{r}
+library(ggplot2)
+mpg
+x <- mpg$hwy
+high <- sort(x, decreasing = TRUE)
+head(high)
+# The three highest hiway mpg values are 44, 44, and 41.
+# Now we will find the three cars in the original data frame that have these values.
+
+top3 <- subset(mpg, hwy >= 41)
+top3
+# According to the output, the three sampled cars that have the highest highway miles per gallon are a volkswagen jetta and two volkswagen new bees.
+```
+
+```{r}
+# 2.
+numCompact <- length(unique(mpg$class))
+print(numCompact)
+# There are seven different compact models in this dataset.
+```
+
+```{r}
+# 3.
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = hwy, y = cty))
+# Highway MPG and City MPG appear to have a positive correlation with each other. The reason why there are son few points plotted on the graph is because there are many points in the complete dataset that overlap. The ggplot program tries to automatically solve this overplotting problem by rounding some of the points from the large dataset to condense the points and make the graph look cleaner.
+```
+
+```{r}
+# 4.
+# First, I create a dataframe for just the rows with data from 1999.
+data1999 <- mpg[mpg$year == 1999, ]
+# I then make another dataframe with rows from 2008.
+data2008 <- mpg[mpg$year == 2008, ]
+
+# Here I compare the summary statistics for the 1999 and 2008 city mpg. Based on the output, cars from 1999 had a slightly higher average and median city mpg than 2008 cars.
+summary(data1999$cty)
+summary(data2008$cty)
+
+# Next I do the same for highway mpg. These two commands show that cars from 1999 had a slightly higher median highway mpg. The difference in the average mpg between both years is almost negligible. The 1999 subset does have a much higher maximum value than the 2008 cars however.
+summary(data1999$hwy)
+summary(data2008$hwy)
+
+# Lastly, I combine the 1999 and 2008 data into one dataframe and plot the highway mpg vs. city mpg. As the plot shows, there are slightly more 1999 (black) points than 2008 (blue) points in the upper right part of the plot, meaning that the older vehicles may have better mpg. For the most part, however, the data points seem to be evenly mixed, so there is not an obvious "better" year. 
+bothYears <- mpg[mpg$year == 1999 | mpg$year == 2008, ]
+ggplot(data = bothYears) + 
+  geom_point(mapping = aes(x = hwy, y = cty, color = year), position = "jitter")
+
+
+# In conclusion, there does not seem to be a substantial improvement in fuel efficiency from 1999 to 2008, however, the cars from 1999 may be slightly more efficient in terms of city and highway mpg.
+```
